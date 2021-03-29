@@ -34,6 +34,8 @@ int maxdiff_n2(int arr[],int N);
 
 int maxdiff_n(int arr[],int N);
 
+int maxProfit(int price[],int start ,int end);
+
 int main() {
     int N = 7;
     int arr[] = {2, 3, 10, 6, 4, 8, 1};
@@ -254,6 +256,141 @@ int maxdiff_n(int arr[],int N)
     {
         res = max(res,arr[i]-minval);
         minval=min(minval,arr[i]);
+    }
+    return res;
+}
+
+// stock buy and sell
+
+int maxProfit(int price[],int start ,int end)
+{
+    int profit=0;
+    if(end<=start)
+        return 0;
+    for(int i=start;i<end;i++)
+    {
+        for(int j=i+1;j<=end;j++)
+        {
+            if(price[j]>price[i])
+            {
+                int curr_profit = price[j]-price[i]+maxProfit(price,start,i-1)+maxProfit(price,j+1,end);
+                profit=max(profit,curr_profit);
+            }
+        }
+    }
+    return profit;
+}
+
+
+int maxProfit_n(int price[],int N)
+{
+    int profit=0;
+    for(int i=1;i<N;i++)
+    {
+        if(price[i]>price[i-1])
+        {
+            profit+=price[i]-price[i-1];
+        }
+    }
+    return profit;
+}
+
+//trapping rain water
+int getwater(int arr[],int N)
+{
+    int res=0;
+    for(int i=1;i<N-2;i++)
+    {
+        int lmax=arr[i];
+        for(int j=0;j<i;j++)
+            lmax=max(lmax,arr[j]);
+        int rmax=arr[i];
+        for(int j=i+1;j<N;j++)
+            rmax=max(rmax,arr[j]);
+
+        res=res+(min(lmax,rmax)-arr[i]);
+
+    }
+    return res;
+}
+
+int getwater_n(int arr[],int N)
+{
+    int res=0;
+    int lmax[N],rmax[N];
+    lmax[0]=arr[0];
+    for(int i=1;i<N;i++)
+    {
+        lmax[i]=max(lmax[i-1],arr[i]);
+    }
+    rmax[0]=arr[N-1];
+    for(int i=N-2;i>=0;i--)
+    {
+        lmax[i]=max(rmax[i+1],arr[i]);
+    }
+    for(int i=1;i<N-1;i++)
+    {
+        res=res+(min(lmax[i],rmax[i])-arr[i]);
+    }
+    return res;
+}
+
+int maxConsecutive1_n2(int arr[],int N)
+{
+    int res=0;
+    for(int i=0;i<N;i++)
+    {
+        int curr=0;
+        for(int j=i;j<N;j++)
+        {
+            if (arr[j]==1)
+                curr++;
+            else
+                break;
+        }
+        res = max(res,curr);
+    }
+    return res;
+}
+
+int maxSum_n2(int arr[],int N)
+{
+    int res=arr[0];
+    for(int i=0;i<N;i++)
+    {
+        int curr=0;
+        for(int j=i;j<N;j++)
+        {
+            curr=curr+arr[i];
+            res=max(res,curr);
+        }
+    }
+}
+
+int maxSum_n(int arr[],int N) {
+    int res = arr[0];
+    int maxending = arr[0];
+    for (int i = 0; i < N; i++) {
+        maxending = max(maxending + arr[i], arr[i]);
+        res = max(res, maxending);
+    }
+    return res;
+}
+
+int even_odd_n2(int arr[],int N)
+{
+    int res=1;
+    for(int i=0;i<N;i++)
+    {
+        int curr=1;
+        for(int j=i+1;i<N;i++)
+        {
+            if(((arr[j]%2==0)&&(arr[j+1]%2!=0))||((arr[j]%2!=0)&&(arr[j+1]%2==0)))
+                curr++;
+            else
+                break;
+        }
+        res=max(res,curr);
     }
     return res;
 }

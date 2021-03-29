@@ -20,6 +20,7 @@ struct Node
 };
 
 Node *insertbegin(Node *head,int x);
+Node *insertatend(Node *head,int x);
 
 int main()
 {
